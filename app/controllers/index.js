@@ -2,17 +2,26 @@
 	itemController: 'goy',
 	actions: {
       share: function() {
-      	this.pushObject({width:100, height:100, source:this.get('source')});
+      	// this.pushObject({width:100, height:100, source:this.get('source')});
+        var GoyPhoto = Parse.Object.extend("GoyPhoto");
+        var goyPhoto = new GoyPhoto();
+        goyPhoto.save({width:100, height:100, source:this.get('source')}, {
+          success: function(goyPhoto){
+            alert("saved!");
+          }, 
+          error: function(goyPhoto, error){
+            alert("save failed!");
+          }
+        });
       },
 
       test: function() {
         var MyObject = Parse.Object.extend("MyObject");
 
         var query = new Parse.Query(MyObject);
-        query.equalTo("name", "john");
         query.find({
           success: function(o) {
-            alert("yuhuuu" + o[0].get("name")); 
+            alert("yuhuuu" + o.length); 
           },
           error: function(object, error) {
             alert("anam");
