@@ -1,42 +1,14 @@
 
-{{!-- {{style}} --}}
-{{!-- <div class="isotope js-isotope" data-isotope-options='{ "itemSelector": ".item", "masonry": { "columnWidth": 200, fitColumn:true } }'> --}}
-
-
-  
  <div id="mega-container" class="isotope js-isotope is-varying-sizes" data-isotope-options='{ "masonry": { "columnWidth": 10 } }'>
-<div class="item" style="width:1px;height:1px;">a</div
-	{{#each controller}}
-	  {{goy source=source height=height width=width style=style likePhoto=likePhoto}}
+{{!-- <div class="item" style="width:1px;height:1px;">a</div --}}
+	{{#each photoList}}
+    {{goy height=item.height width=item.width source=item.source photoId=id layks=item.likeCount}}
+	  {{!-- {{photo-item source=source height=height width=width}} --}}
 	{{/each}}
 </div>
 
 {{input type='text' value=source}}
-<button {{action "share"}} >Upload</button>
+<button {{action "share"}}>Upload</button>
 
-<button {{action "test"}}> TEST </button>
-<button {{action "save"}}> save </button>
-{{!-- <div class="isotope js-isotope" data-isotope-options='{ "itemSelector": ".item", "masonry": { "columnWidth": 100 } }'>
-  <div class="item" {{bind-attr style=style}} {{action "increase"}}></div>
 
-  <div class="item" {{bind-attr style=style}} {{action "increase"}}></div>
-</div>
- --}}
-
-{{!-- 
-<div class="isotope" id="aaa">
-  <div class="item width2"></div>
-  <div class="item height2"></div>
-  <div class="item"></div>
-  <div class="item"></div>
-  <div class="item width2 height2"></div>
-  <div class="item width2"></div>
-  <div class="item width2"></div>
-  <div class="item height2"></div>
-  <div class="item"></div>
-  <div class="item width2"></div>
-  <div class="item height2"></div>
-  <div class="item"></div>
-  <div class="item"></div>
-</div> --}}
 

@@ -1,49 +1,67 @@
- export default Ember.ArrayController.extend({
-	itemController: 'goy',
+import PhotoModel from 'appkit/models/photo';
+
+ export default Ember.ObjectController.extend({
+
+
+  photoList: function(){
+    var p = this.get("photos");
+    // return p;
+    var photoObjects = p.map(function(photo){
+                return Ember.Object.create({
+                  id: photo.id,
+                  item: PhotoModel.create(photo.attributes)
+                }); 
+              });
+
+    // var a = PhotoModel.create(p[0]);
+    return photoObjects;
+  }.property("photos"),
+
 	actions: {
       share: function() {
-      	// this.pushObject({width:100, height:100, source:this.get('source')});
         var GoyPhoto = Parse.Object.extend("GoyPhoto");
         var goyPhoto = new GoyPhoto();
-        goyPhoto.save({width:100, height:100, source:this.get('source')}, {
-          success: function(goyPhoto){
-            alert("saved!");
+        var _this = this;
+        goyPhoto.save({width:100, height:100, source:this.get('source'), likeCount: 1}, {
+          success: function(savedPhoto){
+            var p = Ember.Object.create({
+                      id: savedPhoto.id, 
+                      item: PhotoModel.create(savedPhoto.attributes)
+                    });
+            _this.get("photoList").addObject(p);
+            // alert("saved source! " + _this.get('source'));
           }, 
-          error: function(goyPhoto, error){
+          error: function(error){
             alert("save failed!");
           }
         });
       },
+      
+      likePhoto: function(photoId){
+    		// this.set('layks', this.get('layks') + 0.1);
+    		// console.log("like:" + this.get('layks'));	
+        var photo = this.get("photoList").findBy("id", photoId);
+        var p = Ember.Object.create({
+                      id: photoId, 
+                      item: {
+                        width: photo.item.width,
+                        height: photo.item.height,
+                        likeCount: photo.item.likeCount + 0.1,
+                        source: photo.item.source
 
-      test: function() {
-        var MyObject = Parse.Object.extend("MyObject");
+                      }
+                    });
 
-        var query = new Parse.Query(MyObject);
-        query.find({
-          success: function(o) {
-            alert("yuhuuu" + o.length); 
-          },
-          error: function(object, error) {
-            alert("anam");
-            // The object was not retrieved successfully.
-            // error is a Parse.Error with an error code and message.
-          }
-        });
-      },
+        this.get("photoList").removeObject(photo);
+        this.get("photoList").addObject(p);
 
-      save: function() {
-        var MyObject = Parse.Object.extend("MyObject");
+        // var i = this.get("photoList").indexOf(photo);
+        // this.get("photoList")[i] = p;
 
-        var myObject = new MyObject();
-        myObject.save({name: "john"}).then(function(object) {
-          alert("john saved");
-        });
-      },
+    		console.log("old count:" + photo.item.likeCount);
+        console.log("new count: " + p.item.likeCount);
 
-      likePhoto: function(){
-  		// this.set('layks', this.get('layks') + 0.1);
-  		// console.log("like:" + this.get('layks'));	
-  			console.log("adsda");
+        PhotoModel.update(photoId, p.item);
   		}
    }
 }

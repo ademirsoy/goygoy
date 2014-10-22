@@ -1,8 +1,9 @@
 {{!-- <img src="http://placekitten.com/100/120" {{bind-attr height=height width=width}}> --}}
 
-{{!-- <div class="item" {{bind-attr style=style}}> --}}
-<img {{bind-attr src=imageSource style=view.style}} {{action "likePhoto"}}>
+{{!-- {{photo-item source=view.source }} --}}
 
-{{!-- <span {{action "likePhoto"}}><img src="http://i.telegraph.co.uk/multimedia/archive/02572/istanbul_2572423b.jpg" style="height:300px; width:300px;"><br>Simply beautiful.</span> --}}
+{{!-- <div class="item" {{bind-attr style=style}}> --}}
+<img {{bind-attr src=view.imageSource style=view.style}} {{action "likePhoto" view.photoId}}>
+<span><img {{bind-attr src=view.imageSource}} style="height:300px; width:300px;"><br>Simply beautiful.</span>
 
 {{!-- </div> --}}
